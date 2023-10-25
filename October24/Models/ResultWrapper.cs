@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace October24.Models
 {
-    internal class SearchResult
+    public class ResultWrapper
     {
         private int _foundIndex;
         private string _searchSubject;
@@ -14,19 +14,19 @@ namespace October24.Models
         private Employee _employee;
 
 
-        public SearchResult(int foundIndex, string searchSubject,Employee emp)
+        public ResultWrapper(int foundIndex, string searchSubject,Employee emp)
         {
             FoundIndex = foundIndex;
             SearchSubject = searchSubject;
             Employee = emp;
         }
-        public SearchResult(int foundIndex, string searchSubject, Company comp)
+        public ResultWrapper(int foundIndex, string searchSubject, Company comp)
         {
             FoundIndex = foundIndex;
             SearchSubject = searchSubject;
             Company = comp;
         }
-        public SearchResult(int foundIndex)
+        public ResultWrapper(int foundIndex)
         {
             FoundIndex = foundIndex;
         }

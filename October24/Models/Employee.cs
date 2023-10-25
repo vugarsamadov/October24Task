@@ -7,20 +7,20 @@ using System.Threading.Tasks;
 
 namespace October24.Models
 {
-    internal class Employee
+    public class Employee
     {
         private string _name;
         private string _surname;
         private string _username;
-        private byte _age;
+        private sbyte _age;
 
-        public string Name { get => _name; set => _name = Helper.FormatName(value); }
-        public string Surname { get => _surname; set => _surname = Helper.FormatName(value); }
-        public byte Age { get => _age; set => _age = IsValidAge(value) ? value : _age; }
+        public string Name { get => _name; set => _name = FormatName(value); }
+        public string Surname { get => _surname; set => _surname = FormatName(value); }
+        public sbyte Age { get => _age; set => _age = IsValidAge(value) ? value : _age; }
         public string Username { get => _username; set=>_username = value; }
 
 
-        public Employee(string name, string surname, byte age)
+        public Employee(string name, string surname, sbyte age)
         {
             Name = name;
             Surname = surname;
@@ -28,7 +28,7 @@ namespace October24.Models
             Username = Name + "_" + Surname;
         }
        
-        private bool IsValidAge(byte age)
+        private bool IsValidAge(sbyte age)
         {
             return age > 0;
         }
@@ -38,5 +38,13 @@ namespace October24.Models
             return $"Employe: {Name} {Surname} is registered with {Username} username";
         }
 
+        private string FormatName(string name)
+        {
+            var charArray = name.ToCharArray();
+
+            charArray[0] = char.ToUpper(charArray[0]);
+
+            return new string(charArray);
+        }
     }
 }

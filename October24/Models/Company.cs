@@ -8,13 +8,18 @@ using System.Threading.Tasks;
 
 namespace October24.Models
 {
-    internal class Company
+    public class Company
     {
+        private Helper helper = new Helper();
+        private string EMPLOYEE_SUBJECT_NAME = "Employee";
+        private string COMPANY_SUBJECT_NAME = "Company";
+
+
         private string _name;
         public string Name
         {
             get => _name;
-            set => _name = Helper.FormatName(value);
+            set => _name = FormatName(value);
         }
 
         private Employee[] _employees = new Employee[0];
@@ -41,20 +46,20 @@ namespace October24.Models
             if (!EmployeeExists(userName)) return;
             var employeeIndx = GetEmployee(userName).FoundIndex;
 
-            Helper.RemoveEmployeeFromDatabase(employeeIndx, ref _employees);
+            helper.RemoveEmployeeFromDatabase(employeeIndx, ref _employees);
         }
 
-        public SearchResult GetEmployee(string userName)
+        public ResultWrapper GetEmployee(string userName)
         {
             for (int i = 0; i < Employees.Length; i++)
             {
                 if (Employees[i].Username == userName)
                 {
-                    return new SearchResult(i,Helper.EMPLOYEE_SUBJECT_NAME,Employees[i]);
+                    return new ResultWrapper(i,EMPLOYEE_SUBJECT_NAME,Employees[i]);
                 }
             }
             Console.WriteLine("There exists no user with the provided username.");
-            return new SearchResult(-1);
+            return new ResultWrapper(-1);
         }
 
         public bool EmployeeExists(string userName)
@@ -67,6 +72,14 @@ namespace October24.Models
             return Employees;
         }
 
+        public override string ToString()
+        {
+            return $@"
+Company : {Name}
+Employee Count: {Employees.Length}
+";
+        }
+
         public void UpdateUser(string userName, Employee newEmployee)
         {
             var searchResult = GetEmployee(userName);
@@ -76,9 +89,18 @@ namespace October24.Models
                 Console.WriteLine("There exists no user with the provided username.");
                 return;
             }
-            searchResult.Employee.Name = newEmployee.Name;
-            searchResult.Employee.Username = newEmployee.Username;
+            searchResult.Employee.Name = String.IsNullOrEmpty(newEmployee.Name) ? searchResult.Employee.Name : newEmployee.Name;
+            searchResult.Employee.Username = String.IsNullOrEmpty(newEmployee.Username) ? searchResult.Employee.Username : newEmployee.Username;
             searchResult.Employee.Age = newEmployee.Age;
+        }
+
+        private string FormatName(string name)
+        {
+            var charArray = name.ToCharArray();
+
+            charArray[0] = char.ToUpper(charArray[0]);
+
+            return new string(charArray);
         }
 
     }

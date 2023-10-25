@@ -7,6 +7,7 @@ namespace October24
     {
         static void Main(string[] args)
         {
+            Helper helper = new Helper();
             Company company = new Company(" E™ ");
             
             //Test employees
@@ -22,43 +23,57 @@ namespace October24
             do
             {
                 Console.WriteLine("=========================================================");
+                Console.WriteLine(company);
+                Console.WriteLine("=========================================================");
                 Console.WriteLine();
-                command = Helper.PromptCommands();
+                command = helper.PromptCommands();
                 switch (command)
                 {
                     case 1:
-                        /* Burani basa dusmedim company coxlu yaratmaq olsun? */
+                        Console.Clear();
+                        company = helper.GetCompanyFromUser();
                         break;
                     case 2:
-                        var employee = Helper.GetEmployeeFromUser();
+                        Console.Clear();
+                        var employee = helper.GetEmployeeFromUser();
                         company.AddEmployee(employee);
                         break;
                     case 3:
-                        var employeeUserName = Helper.PromptUserAndGetString("Please enter username: ");
+                        Console.Clear();
+                        var employeeUserName = helper.PromptUserAndGetString("Please enter username: ");
                         company.RemoveEmployee(employeeUserName);
                         break;
                     case 4:
-                        var UserName = Helper.PromptUserAndGetString("Please enter username: ");
-                        var NewEmployee = Helper.PromptUpdateEmployeeAndGetEmployee();
-                        company.UpdateUser(UserName,NewEmployee);
+                        Console.Clear();
+                        var UserName = helper.PromptUserAndGetString("Please enter username: ");
+                        if(!company.EmployeeExists(UserName))
+                        {
+                            break;
+                        }
+                       var NewEmployee = helper.PromptUpdateEmployeeAndGetEmployee(company.GetEmployee(UserName).Employee);
+                       company.UpdateUser(UserName,NewEmployee);
                         break;
                     case 5:
-                        Helper.PrintEmployeeArray(company.GetAllEmployees());
+                        Console.Clear();
+                        helper.PrintEmployeeArray(company.GetAllEmployees());
                         break;
                     case 6:
-                        var userName = Helper.PromptUserAndGetString("Please enter username: ");
+                        Console.Clear();
+                        var userName = helper.PromptUserAndGetString("Please enter username: ");
                         Console.WriteLine(company.GetEmployee(userName).Employee);
                         break;
                     case 7:
                         break;
-
                     default:
+                        Console.Clear();
                         Console.WriteLine("Invalid command!");
                         break;
                 }
                 Console.WriteLine();
 
-            } while (command < 7);
+            } while (command != 7);
         }
+
+
     }
 }
